@@ -1,0 +1,60 @@
+﻿<Page x:Class="CP_v1_2.MyPages.pagePlanning"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CP_v1_2.MyPages" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      mc:Ignorable="d" 
+      d:DesignHeight="750" d:DesignWidth="1000"
+      Title="pagePlanning">
+    <DockPanel Background="Transparent">
+        <Grid DockPanel.Dock="Top" Background="Transparent" Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="btnAddRow" Grid.Column="1" Click="btnAddRow_Click" 
+                    Style="{StaticResource addDataButton}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Icon:PackIconMaterial Kind="CalendarEdit"/>
+                        <TextBlock Text="Add new planning row" Margin="5 0 0 0"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"   
+                  Style="{DynamicResource DataGridStyle1}" 
+                  x:Name="dataPlanning">
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Binding = "{Binding ID}"        Visibility="Collapsed" Header="#" IsReadOnly="True" CanUserResize="False" Width="auto"/>
+                <DataGridTextColumn Binding = "{Binding Year}"      Header="Year" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding = "{Binding Month}"     Header="Month" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding = "{Binding Category}"  Header="Category" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding = "{Binding Sum}"       Header="Sum" IsReadOnly="True" Width="*"/>
+
+                <DataGridTemplateColumn Header="Operations" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="btnEditRow" Click="btnEditRow_Click" 
+                                        Style="{DynamicResource editDataButton}">
+                                    <Icon:PackIconMaterial Kind="PencilOutline"/>
+                                </Button>
+                                <Button x:Name="btnDeleteRow" Click="btnDeleteRow_Click" 
+                                        Style="{DynamicResource deleteDataButton}">
+                                    <Icon:PackIconMaterial Kind="DeleteOutline"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+
+</Page>

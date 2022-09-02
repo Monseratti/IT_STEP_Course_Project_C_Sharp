@@ -1,0 +1,233 @@
+﻿<Window x:Class="CP_v1_2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CP_v1_2.CustomButton"
+        xmlns:Icon ="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Title="Home Budget" Height="800" Width="1200" WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        MouseDown="Window_MouseDown">
+    <Border CornerRadius="40"
+            BorderThickness="4">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" >
+                <GradientStop Color="#d3badb" Offset="0.0"/>
+                <GradientStop Color="#8a5a9c" Offset="0.5"/>
+                <GradientStop Color="#5c1078" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0" >
+                <GradientStop Color="#060531" Offset="0.0"/>
+                <GradientStop Color="#FF7C118E" Offset="0.692"/>
+                <GradientStop Color="#FF6713BF" Offset="0.909"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="25"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock     x:Name="tblTitle"
+                           Text="HOME BUDGET" 
+                           Grid.Column="0" 
+                           FontSize="15"
+                           Foreground="White"
+                           Margin="40,0,0,0" 
+                           TextAlignment="Center" />
+            <Button x:Name="btnMinimize"
+                        BorderThickness="0"
+                        Grid.Column="1"
+                        Content="-"
+                        FontSize="15"
+                        Foreground="White"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Click="btnMinimize_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#5c1078"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#d3badb"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="20" Height="20"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnMaximize"
+                        BorderThickness="0"
+                        Grid.Column="2"
+                        Content="o"
+                        FontSize="15"
+                        Foreground="White"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Click="btnMaximize_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#5c1078"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#15ff00"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="20" Height="20"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Button x:Name="btnClose"
+                        BorderThickness="0"
+                        Grid.Column="3"
+                        Content="X"
+                        FontSize="10"
+                        Foreground="White"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Click="btnClose_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#5c1078"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ff0000"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="20" Height="20"
+                                    CornerRadius="10"
+                                    Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="5">
+                <Grid DockPanel.Dock="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Ellipse x:Name="imgUser" 
+                                 Stretch="Uniform" 
+                                 Height="100" Width="100" 
+                                 HorizontalAlignment="Center" 
+                                 VerticalAlignment="Top"/>
+                    <TextBlock x:Name="tblUser" 
+                                   VerticalAlignment="Bottom"
+                                   Margin="0 0 0 20"
+                                   FontSize="20"
+                                   Foreground="White"
+                                   TextAlignment="Center"/>
+                    <ListBox x:Name="menuList" SelectionChanged="menuList_SelectionChanged"
+                                 SelectionMode="Single"
+                                 Grid.Row="1" 
+                                 DockPanel.Dock="Left"  
+                                 Background="Transparent" 
+                                 BorderThickness="0"
+                                 BorderBrush="Transparent">
+                        <local:NavButton  
+                                Padding="5" Margin="10" Width="80" Height="50"
+                                NavLink="\MyPages\Dashboard.xaml"
+                                Icon="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z">
+                            <local:NavButton.ToolTip>
+                                <ToolTip>
+                                    Home
+                                </ToolTip>
+                            </local:NavButton.ToolTip>
+                        </local:NavButton>
+                        <local:NavButton  
+                                Padding="5" Margin="10" Width="80" Height="50"
+                                NavLink="\MyPages\pageCashFlow.xaml"
+                                Icon="M2,5H22V20H2V5M20,18V7H4V18H20M17,8A2,2 0 0,0 19,10V15A2,2 0 0,0 17,17H7A2,2 0 0,0 5,15V10A2,2 0 0,0 7,8H17M17,13V12C17,10.9 16.33,10 15.5,10C14.67,10 14,10.9 14,12V13C14,14.1 14.67,15 15.5,15C16.33,15 17,14.1 17,13M15.5,11A0.5,0.5 0 0,1 16,11.5V13.5A0.5,0.5 0 0,1 15.5,14A0.5,0.5 0 0,1 15,13.5V11.5A0.5,0.5 0 0,1 15.5,11M13,13V12C13,10.9 12.33,10 11.5,10C10.67,10 10,10.9 10,12V13C10,14.1 10.67,15 11.5,15C12.33,15 13,14.1 13,13M11.5,11A0.5,0.5 0 0,1 12,11.5V13.5A0.5,0.5 0 0,1 11.5,14A0.5,0.5 0 0,1 11,13.5V11.5A0.5,0.5 0 0,1 11.5,11M8,15H9V10H8L7,10.5V11.5L8,11V15Z">
+                            <local:NavButton.ToolTip>
+                                <ToolTip>
+                                    Cashflow
+                                </ToolTip>
+                            </local:NavButton.ToolTip>
+                        </local:NavButton>
+                        <local:NavButton  
+                                Padding="5" Margin="10" Width="80" Height="50"
+                                NavLink="\MyPages\pageWallets.xaml"
+                                Icon="M3 0V3H0V5H3V8H5V5H8V3H5V0H3M10 3V5H19V7H13C11.9 7 11 7.9 11 9V15C11 16.1 11.9 17 13 17H19V19H5V10H3V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V16.72C21.59 16.37 22 15.74 22 15V9C22 8.26 21.59 7.63 21 7.28V5C21 3.9 20.1 3 19 3H10M13 9H20V15H13V9M16 10.5A1.5 1.5 0 0 0 14.5 12A1.5 1.5 0 0 0 16 13.5A1.5 1.5 0 0 0 17.5 12A1.5 1.5 0 0 0 16 10.5Z">
+                            <local:NavButton.ToolTip>
+                                <ToolTip>
+                                    Wallets
+                                </ToolTip>
+                            </local:NavButton.ToolTip>
+                        </local:NavButton>
+                        <local:NavButton  
+                                Padding="5" Margin="10" Width="80" Height="50"
+                                NavLink="\MyPages\pagePlanning.xaml"
+                                Icon="M21.7 13.35L20.7 14.35L18.65 12.35L19.65 11.35C19.85 11.14 20.19 11.13 20.42 11.35L21.7 12.63C21.89 12.83 21.89 13.15 21.7 13.35M12 18.94V21H14.06L20.12 14.88L18.07 12.88L12 18.94M5 19H10V21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H6V1H8V3H16V1H18V3H19C20.11 3 21 3.9 21 5V9H5V19M5 5V7H19V5H5Z">
+                            <local:NavButton.ToolTip>
+                                <ToolTip>
+                                    Planning
+                                </ToolTip>
+                            </local:NavButton.ToolTip>
+                        </local:NavButton>
+                        <local:NavButton  
+                                Padding="5" Margin="10" Width="80" Height="50"
+                                NavLink="\MyPages\pageCurrentUserSettings.xaml"
+                                Icon="M12 4C14.21 4 16 5.79 16 8S14.21 12 12 12 8 10.21 8 8 9.79 4 12 4M12 6C10.9 6 10 6.9 10 8S10.9 10 12 10 14 9.11 14 8 13.11 6 12 6M12 13C14.67 13 20 14.33 20 17V20H4V17C4 14.33 9.33 13 12 13M12 14.9C9.03 14.9 5.9 16.36 5.9 17V18.1H18.1V17C18.1 16.36 14.97 14.9 12 14.9M13 22H11V24H13V22M17 22H15V24H17V22M9 22H7V24H9V22Z">
+                            <local:NavButton.ToolTip>
+                                <ToolTip>
+                                    User settings
+                                </ToolTip>
+                            </local:NavButton.ToolTip>
+                        </local:NavButton>
+
+                    </ListBox>
+                    <Button x:Name="bnt_Logout" Click="bnt_Logout_Click" Grid.Row="2" Style="{StaticResource btn_Logout}">
+                        <Button.ToolTip>
+                            <ToolTip>
+                                Log Out
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
+                </Grid>
+                <Rectangle DockPanel.Dock="Left" Width="5" Fill="MediumPurple"/>
+                <Frame x:Name="panelDesktop" DockPanel.Dock="Left"
+                       Grid.ColumnSpan ="5"
+                       NavigationUIVisibility="Hidden"/>
+            </DockPanel>
+
+
+        </Grid>
+    </Border>
+</Window>

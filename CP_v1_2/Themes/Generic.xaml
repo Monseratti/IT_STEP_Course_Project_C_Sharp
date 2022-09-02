@@ -1,0 +1,33 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:CP_v1_2.CustomButton">
+
+
+    <Style TargetType="{x:Type local:NavButton}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:NavButton}">
+                    <Border x:Name="back" Background="#5c1078"
+                            CornerRadius="20" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Path x:Name="icon" Height="25" Width="25" Stretch="Uniform" Fill="White" Data="{TemplateBinding Icon}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="back" Value="#a021cf"/>
+                            <Setter Property="Fill" TargetName="icon" Value="#dc8ff7"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" TargetName="back" Value="#a021cf"/>
+                            <Setter Property="Fill" TargetName="icon" Value="#dc8ff7"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,92 @@
+﻿<Page x:Class="CP_v1_2.MyPages.Dashboard"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:Icon ="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:local="clr-namespace:CP_v1_2.MyPages"
+      xmlns:conv="clr-namespace:CP_v1_2.Classes"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Title="Dashboard">
+
+    <Page.Resources>
+        <conv:BolleanToIntConverter x:Key="TypeConv"/>
+        <conv:DateTimeToStringConverter x:Key="DateConv"/>
+    </Page.Resources>
+    <Grid>
+
+
+        <TextBlock Text="Today cashflow" 
+                   Foreground="#f0f0f0"
+                   Margin="80 20"
+                   Height="50"
+                   Width="300"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment ="Top"
+                   FontSize="30"/>
+        <Grid Height="300" Width="450"
+              HorizontalAlignment="Left" 
+              VerticalAlignment ="Top" Margin="10 80 0 0">
+
+            <DataGrid x:Name="dtg_Info"
+                  HeadersVisibility="None"
+                  Style="{StaticResource dtg_Info}"
+                  RowStyle ="{StaticResource dtg_Info_DTGRow}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="45">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Icon:PackIconMaterial Kind="ArrowUpBold" 
+                                                       Foreground="Green" 
+                                                       Visibility="{Binding CatType, ConverterParameter=True, Converter={StaticResource TypeConv}}"/>
+                                    <Icon:PackIconMaterial Kind="ArrowDownBold" 
+                                                       Foreground="Red" 
+                                                       Visibility="{Binding CatType, ConverterParameter=False, Converter={StaticResource TypeConv}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Nom}"/>
+                    <DataGridTextColumn Binding="{Binding Sum}"/>
+                    <DataGridTextColumn Binding="{Binding Date, ConverterParameter=False, Converter={StaticResource DateConv}}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <TextBlock Text="Current wallets state" 
+                   Foreground="#f0f0f0"
+                   Margin="580,20,0,0"
+                   Height="50"
+                   Width="300"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment ="Top"
+                   FontSize="30"/>
+        <Grid Height="300" Width="450"
+              HorizontalAlignment="Left" 
+              VerticalAlignment ="Top" Margin="510 80 0 0">
+
+            <DataGrid x:Name="dtg_InfoWallet"
+                  HeadersVisibility="None"
+                  Style="{StaticResource dtg_Info}"
+                  RowStyle ="{StaticResource dtg_Info_DTGRow}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="45">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <Icon:PackIconMaterial Kind="FolderDownloadOutline" 
+                                                       Foreground="WhiteSmoke"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Wallet}"/>
+                    <DataGridTextColumn Binding="{Binding Sum}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Page>
