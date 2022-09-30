@@ -44,7 +44,7 @@ namespace CP_v1_2.MyWindows
         {
             using (HBContext db = new HBContext())
             {
-                int userID = db.TemporaryUsers.Where(tmp=>tmp.TemporaryUserID==1).Select(w => w.UserId).First();
+                int userID = db.TemporaryUsers.Where(tmp => tmp.TemporaryUserID == 1).Select(w => w.UserId).First();
 
                 cbxWallets.ItemsSource = db.Wallets.Where(w => w.UserID == userID).Select(w => w.WalletName).ToList();
                 cbxNom.ItemsSource = db.Nomenclatures.Select(o => o.NomenclatureName).ToList();
@@ -94,7 +94,7 @@ namespace CP_v1_2.MyWindows
                     MessageBox.Show("Wrong sum value");
                     return;
                 }
-                //wallet: change sum
+                //wallet and planning: change sum
                 if (Edit)
                 {
                     bool currCategoryType = db.Nomenclatures.Where(n => n.NomenclatureID == CashFlow.NomenclatureID).
@@ -102,6 +102,17 @@ namespace CP_v1_2.MyWindows
                                                 Join(db.Categories, n => n.CategoryID, c => c.CategoryID,
                                                 (n, c) => new { c.CategoryType }).Select(o => o.CategoryType).First();
                     db.Wallets.Where(w => w.WalletID == CashFlow.WalletID).First().WalletSum += currCategoryType ? (CashFlow.Sum * -1) : CashFlow.Sum;
+
+                    Wallet old_wallet = db.Wallets.Where(w => w.WalletID == CashFlow.WalletID).First();
+                    int old_categoryID = db.Nomenclatures.Where(nom => nom.NomenclatureID == CashFlow.NomenclatureID).First().CategoryID;
+                    try
+                    {
+                        db.PlanningCashFlows.Where(pl => pl.UserID == old_wallet.UserID
+                        && pl.Period_month == CashFlow.DateTime.Month && pl.Period_year == CashFlow.DateTime.Year
+                        && pl.CurrencyID == old_wallet.CurrencyID && pl.CategoryID == old_categoryID).
+                        First().CashFlowSum -= CashFlow.Sum;
+                    }
+                    catch (Exception) { }
                 }
                 //write new parametres
                 CashFlow.WalletID = db.Wallets.Where(w => w.WalletName == cbxWallets.SelectedItem.ToString()).Select(w => w.WalletID).First();
@@ -111,7 +122,6 @@ namespace CP_v1_2.MyWindows
                 CashFlow.Sum = sum;
                 //new wallet: change sum
                 bool newCategoryType = db.Nomenclatures.Where(n => n.NomenclatureID == CashFlow.NomenclatureID).
-
                                                 Join(db.Categories, n => n.CategoryID, c => c.CategoryID,
                                                 (n, c) => new { c.CategoryType }).Select(o => o.CategoryType).First();
                 decimal newWalletSum = db.Wallets.Where(w => w.WalletID == CashFlow.WalletID).First().WalletSum;
@@ -137,6 +147,18 @@ namespace CP_v1_2.MyWindows
                     db.CashFlows.Where(o => o.ID == CashFlow.ID).First().Sum = CashFlow.Sum;
 
                 }
+                //check and change planning cashflow sum
+                Wallet wallet = db.Wallets.Where(w => w.WalletID == CashFlow.WalletID).First();
+                int categoryID = db.Nomenclatures.Where(nom => nom.NomenclatureID == CashFlow.NomenclatureID).First().CategoryID;
+                try
+                {
+                    db.PlanningCashFlows.Where(pl => pl.UserID == wallet.UserID
+                    && pl.Period_month == CashFlow.DateTime.Month && pl.Period_year == CashFlow.DateTime.Year
+                    && pl.CurrencyID == wallet.CurrencyID && pl.CategoryID == categoryID).
+                    First().CashFlowSum += CashFlow.Sum;
+                }
+                catch (Exception)
+                {              }
                 //save changes
                 db.SaveChanges();
             }

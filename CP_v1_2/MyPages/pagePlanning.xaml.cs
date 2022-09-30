@@ -32,11 +32,14 @@ namespace CP_v1_2.MyPages
 
         private void ViewPlanning()
         {
-           using(HBContext db = new HBContext())
+            using (HBContext db = new HBContext())
             {
-                var planningList = db.PlanningCashFlows.Where(pl => pl.UserID == User.UserID).Join(db.Categories, pl => pl.CategoryID, cat => cat.CategoryID,
-                    (pl, cat) => new {ID = pl.PcfID, Year = pl.period_year, Month = pl.period_month, Category = cat.CategoryName, Sum = pl.Sum}).ToList();
-                
+                var planningList = db.PlanningCashFlows.Where(pl => pl.UserID == User.UserID)
+                    .Join(db.Currencies, pl => pl.CurrencyID, cur => cur.CurrensyID,
+                    (pl, cur) => new { pl.PcfID, pl.CategoryID, pl.Sum, pl.CashFlowSum, pl.Period_month, pl.Period_year, cur.CurrencyName })
+                    .Join(db.Categories, pl => pl.CategoryID, cat => cat.CategoryID,
+                    (pl, cat) => new { ID = pl.PcfID, Year = pl.Period_year, Month = pl.Period_month, Category = cat.CategoryName, Sum = pl.Sum, CashFlowSum = pl.CashFlowSum, Currency = pl.CurrencyName }).ToList();
+ 
                 dataPlanning.ItemsSource = planningList;
             }
         }

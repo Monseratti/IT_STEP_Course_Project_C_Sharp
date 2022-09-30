@@ -455,7 +455,7 @@ namespace CP_v1_2.CustomButton
 						break;
 				}
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
 				//Catch dates with year over 9999 etc, dont throw
 			}

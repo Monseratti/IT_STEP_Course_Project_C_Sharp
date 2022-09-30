@@ -43,7 +43,7 @@ namespace CP_v1_2.MyWindows
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            DialogResult = false;
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -52,11 +52,14 @@ namespace CP_v1_2.MyWindows
             {
                 try
                 {
-                    User = db.Users.Where(u => u.Login == txtLogin.Text && u.Password == txtPass.Password).First();
-                    using (MemoryStream mStream = new MemoryStream(User.UserPhoto))
+                    User = db.Users.Where(u => u.Login.Equals(txtLogin.Text) && u.Password.Equals(txtPass.Password)).First();
+                    if (User.UserPhoto != null)
                     {
-                        User.photo = BitmapFrame.Create(mStream,
-                                    BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        using (MemoryStream mStream = new MemoryStream(User.UserPhoto))
+                        {
+                            User.photo = BitmapFrame.Create(mStream,
+                                        BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                        }
                     }
                     try
                     {
@@ -71,7 +74,7 @@ namespace CP_v1_2.MyWindows
                         db.SaveChanges();
                     }
                     DialogResult = true;
-                 }
+                }
                 catch (Exception)
                 {
                     tblError.Visibility = Visibility.Visible;

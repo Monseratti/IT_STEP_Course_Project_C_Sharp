@@ -143,6 +143,9 @@
     <Reference Include="MahApps.Metro.IconPacks.Zondicons, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.IconPacks.4.11.0\lib\net47\MahApps.Metro.IconPacks.Zondicons.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -167,6 +170,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Course.cs" />
     <Compile Include="Classes\Currency.cs" />
     <Compile Include="Classes\staticServiseClass.cs" />
     <Compile Include="CustomButton\DateTimePicker.xaml.cs">
@@ -176,14 +180,29 @@
     <Compile Include="MyPages\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyPages\pageAdminSettings.xaml.cs">
+      <DependentUpon>pageAdminSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyPages\pageCurrentUserSettings.xaml.cs">
       <DependentUpon>pageCurrentUserSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyWindows\editCategorySettings.xaml.cs">
+      <DependentUpon>editCategorySettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyWindows\editCurrenciesSettings.xaml.cs">
+      <DependentUpon>editCurrenciesSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyWindows\editCashFlow.xaml.cs">
       <DependentUpon>editCashFlow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MyWindows\editNomenclatureSettings.xaml.cs">
+      <DependentUpon>editNomenclatureSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyWindows\editPlanning.xaml.cs">
       <DependentUpon>editPlanning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyWindows\editUsersSettings.xaml.cs">
+      <DependentUpon>editUsersSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyWindows\editWallet.xaml.cs">
       <DependentUpon>editWallet.xaml</DependentUpon>
@@ -224,7 +243,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MyPages\pageAdminSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyPages\pageCurrentUserSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyWindows\editCategorySettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyWindows\editCurrenciesSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,9 +263,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyWindows\editNomenclatureSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MyWindows\editPlanning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MyWindows\editUsersSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="MyWindows\editWallet.xaml">
       <SubType>Designer</SubType>

@@ -28,10 +28,10 @@ namespace CP_v1_2.MyPages
         {
             InitializeComponent();
             User = staticServiseClass.GetTemporaryUser();
-            viewCashFlow();
+            viewCashFlow(tblSearch.Text);
         }
         #region Cashflow view
-        private void viewCashFlow()
+        private void viewCashFlow(string find)
         {
             using (HBContext db = new HBContext())
             {
@@ -61,6 +61,10 @@ namespace CP_v1_2.MyPages
                         Curr = cf.CurrencyName,
                         Desc = cf.Description,
                     }).ToArray();
+                if (tblSearch.Text != string.Empty)
+                {
+                    cashflow = cashflow.Where(o => o.Categ.Contains(tblSearch.Text)).ToArray();
+                }
 
                 dataCashFlow.ItemsSource = cashflow;
             }
@@ -73,7 +77,7 @@ namespace CP_v1_2.MyPages
             int itemID = int.Parse(dataCashFlow.SelectedItem.GetType().GetProperty("ID").GetValue(dataCashFlow.SelectedItem).ToString());
             editCashFlow editCash = new editCashFlow(itemID, true);
             editCash.ShowDialog();
-            viewCashFlow();
+            viewCashFlow(tblSearch.Text);
         }
 
         private void btnDeleteRow_Click(object sender, RoutedEventArgs e)
@@ -83,7 +87,7 @@ namespace CP_v1_2.MyPages
             {
                 try
                 {
-                    CashFlow tmp = db.CashFlows.Where(o=>o.ID == itemID).FirstOrDefault();
+                    CashFlow tmp = db.CashFlows.Where(o => o.ID == itemID).FirstOrDefault();
                     bool currCategoryType = db.Nomenclatures.Where(n => n.NomenclatureID == tmp.NomenclatureID).
 
                                                Join(db.Categories, n => n.CategoryID, c => c.CategoryID,
@@ -96,6 +100,17 @@ namespace CP_v1_2.MyPages
                         return;
                     }
                     db.Wallets.Where(w => w.WalletID == tmp.WalletID).First().WalletSum = newWalletSum;
+                    Wallet old_wallet = db.Wallets.Where(w => w.WalletID == tmp.WalletID).First();
+                    int old_categoryID = db.Nomenclatures.Where(nom => nom.NomenclatureID == tmp.NomenclatureID).First().CategoryID;
+                    try
+                    {
+                        db.PlanningCashFlows.Where(pl => pl.UserID == old_wallet.UserID
+                        && pl.Period_month == tmp.DateTime.Month && pl.Period_year == tmp.DateTime.Year
+                        && pl.CurrencyID == old_wallet.CurrencyID && pl.CategoryID == old_categoryID).
+                        First().CashFlowSum -= tmp.Sum;
+                    }
+                    catch (Exception) { }
+
                     db.CashFlows.Remove(tmp);
                     db.SaveChanges();
                 }
@@ -104,15 +119,20 @@ namespace CP_v1_2.MyPages
                     MessageBox.Show(ex.Message);
                 }
             }
-            viewCashFlow();
+            viewCashFlow(tblSearch.Text);
         }
 
         private void btnAddRow_Click(object sender, RoutedEventArgs e)
         {
             editCashFlow editCash = new editCashFlow(0, false);
             editCash.ShowDialog();
-            viewCashFlow();
+            viewCashFlow(tblSearch.Text);
         }
         #endregion
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            viewCashFlow(tblSearch.Text);
+        }
     }
 }

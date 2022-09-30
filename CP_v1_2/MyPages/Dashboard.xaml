@@ -13,6 +13,7 @@
     <Page.Resources>
         <conv:BolleanToIntConverter x:Key="TypeConv"/>
         <conv:DateTimeToStringConverter x:Key="DateConv"/>
+        <conv:DecimalToStringConverter x:Key="PercentConv"/>
     </Page.Resources>
     <Grid>
 
@@ -39,10 +40,10 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <Icon:PackIconMaterial Kind="ArrowUpBold" 
+                                    <Icon:PackIconMaterial Kind="ArrowDownBold" 
                                                        Foreground="Green" 
                                                        Visibility="{Binding CatType, ConverterParameter=True, Converter={StaticResource TypeConv}}"/>
-                                    <Icon:PackIconMaterial Kind="ArrowDownBold" 
+                                    <Icon:PackIconMaterial Kind="ArrowUpBold" 
                                                        Foreground="Red" 
                                                        Visibility="{Binding CatType, ConverterParameter=False, Converter={StaticResource TypeConv}}"/>
                                 </StackPanel>
@@ -85,6 +86,60 @@
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Binding="{Binding Wallet}"/>
                     <DataGridTextColumn Binding="{Binding Sum}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <TextBlock Text="Implementation of current plans" 
+                   Foreground="#f0f0f0"
+                   Margin="20,400,0,0"
+                   Height="50"
+                   Width="450"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment ="Top"
+                   FontSize="30"/>
+        <Grid Height="300" Width="450"
+              HorizontalAlignment="Left" 
+              VerticalAlignment ="Top" Margin="10 460 0 0">
+
+            <DataGrid x:Name="dtg_PlansInfo"
+                  HeadersVisibility="None"
+                  Style="{StaticResource dtg_Info}"
+                  RowStyle ="{StaticResource dtg_Info_DTGRow}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Category}"/>
+                    <DataGridTextColumn Binding="{Binding Sum}"/>
+                    <DataGridTextColumn Binding="{Binding Percent, Converter={StaticResource PercentConv}}"/>
+                    <DataGridTextColumn Binding="{Binding Currency}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <TextBlock Text="Current exchange course" 
+                   Foreground="#f0f0f0"
+                   Margin="550 400 0 0"
+                   Height="50"
+                   Width="350"
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment ="Top"
+                   TextAlignment="Center"
+                   FontSize="30"/>
+        <Grid Height="300" Width="450" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment ="Top"
+              Margin="510 460 0 0">
+
+            <DataGrid x:Name="dtg_CursInfo"
+                  HeadersVisibility="None"
+                  Style="{StaticResource dtg_Info}"
+                  RowStyle ="{StaticResource dtg_Info_DTGRow}"
+                      Padding="10 0 0 0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Currency}" Width="50"/>
+                    <DataGridTextColumn Binding="{Binding To}" Width="50"/>
+                    <DataGridTextColumn Binding="{Binding BuyCourse}" Width="100"/>
+                    <DataGridTextColumn Binding="{Binding SaleCourse}" Width="100"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

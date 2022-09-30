@@ -15,10 +15,13 @@ namespace CP_v1_2
         public int CategoryID { get; set; }
         [DefaultValue(0)]
         public decimal Sum { get; set; }
-        public int period_month { get; set; }
-        public int period_year { get; set; }
+        public decimal CashFlowSum  { get; set; }
+        public int CurrencyID { get; set; }
+        public int Period_month { get; set; }
+        public int Period_year { get; set; }
         public int UserID { get; set; }
 
+        public Currency Currency { get; set; }
         public User User { get; set; }
         public Category Category { get; set; }
     }

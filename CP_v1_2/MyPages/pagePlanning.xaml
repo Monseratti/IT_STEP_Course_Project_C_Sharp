@@ -36,6 +36,8 @@
                 <DataGridTextColumn Binding = "{Binding Month}"     Header="Month" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Binding = "{Binding Category}"  Header="Category" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Binding = "{Binding Sum}"       Header="Sum" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding = "{Binding CashFlowSum}"       Header="CashFlowSum" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Binding = "{Binding Currency}"  Header="Currency" IsReadOnly="True" Width="*"/>
 
                 <DataGridTemplateColumn Header="Operations" Width="*">
                     <DataGridTemplateColumn.CellTemplate>

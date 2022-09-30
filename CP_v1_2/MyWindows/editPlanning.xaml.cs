@@ -55,12 +55,14 @@ namespace CP_v1_2.MyWindows
                 cbxMonth.ItemsSource = monthList;
 
                 cbxCategory.ItemsSource = db.Categories.Select(cat => cat.CategoryName).ToList();
+                cbxCurrency.ItemsSource = db.Currencies.Select(cur => cur.CurrencyName).ToList();
 
                 if (IsEdit)
                 {
-                    cbxYears.SelectedItem = Planning.period_year;
-                    cbxMonth.SelectedItem = staticServiseClass.getFullMonthName(Planning.period_month);
+                    cbxYears.SelectedItem = Planning.Period_year;
+                    cbxMonth.SelectedItem = staticServiseClass.getFullMonthName(Planning.Period_month);
                     cbxCategory.SelectedItem = db.Categories.Where(cat => cat.CategoryID == Planning.CategoryID).Select(cat => cat.CategoryName).First();
+                    cbxCurrency.SelectedItem = db.Currencies.Where(cur => cur.CurrensyID == Planning.CurrencyID).Select(cur => cur.CurrencyName).First();
                     tblSum.Text = Planning.Sum.ToString();
                 }
                 else
@@ -68,6 +70,7 @@ namespace CP_v1_2.MyWindows
                     cbxYears.SelectedItem = DateTime.Today.Year;
                     cbxMonth.SelectedItem = staticServiseClass.getFullMonthName(DateTime.Today.Month);
                     cbxCategory.SelectedIndex = 0;
+                    cbxCurrency.SelectedIndex = 0;
                 }
             }
         }
@@ -81,16 +84,18 @@ namespace CP_v1_2.MyWindows
         {
             using (HBContext db = new HBContext())
             {
-                Planning.period_month = cbxMonth.SelectedIndex;
-                Planning.period_year = int.Parse(cbxYears.SelectedItem.ToString());
+                Planning.Period_month = cbxMonth.SelectedIndex+1;
+                Planning.Period_year = int.Parse(cbxYears.SelectedItem.ToString());
                 Planning.CategoryID = db.Categories.Where(cat => cat.CategoryName == cbxCategory.SelectedItem.ToString()).Select(cat => cat.CategoryID).First();
+                Planning.CurrencyID = db.Currencies.Where(cur => cur.CurrencyName == cbxCurrency.SelectedItem.ToString()).Select(cur => cur.CurrensyID).First();
                 Planning.Sum = staticServiseClass.TryParseSum(tblSum.Text);
                 Planning.UserID = db.TemporaryUsers.Where(tmp => tmp.TemporaryUserID == 1).Select(tmp => tmp.UserId).First();
                 if (IsEdit)
                 {
-                    db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().period_year = Planning.period_year;
-                    db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().period_month = Planning.period_month;
+                    db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().Period_year = Planning.Period_year;
+                    db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().Period_month = Planning.Period_month;
                     db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().CategoryID = Planning.CategoryID;
+                    db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().CurrencyID = Planning.CurrencyID;
                     db.PlanningCashFlows.Where(pl => pl.PcfID == Planning.PcfID).First().Sum = Planning.Sum;
                 }
                 else

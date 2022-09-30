@@ -1,6 +1,6 @@
-﻿//#define LOGIN
+﻿#define LOGIN
 //#define GUEST
-#define ADMIN
+//#define ADMIN
 //#define USER
 
 using System;
@@ -49,10 +49,10 @@ namespace CP_v1_2
             UserLogReg logReg = new UserLogReg();
             if (logReg.ShowDialog() == true)
             {
-                MessageBox.Show("Connection sucsess");
+                //MessageBox.Show("Connection sucsess");
                 User = logReg.User;
             }
-            else Application.Current.Shutdown();
+            else Close();
 #endif
             using (HBContext db = new HBContext())
             {
@@ -65,10 +65,13 @@ namespace CP_v1_2
 #if USER
                 User = db.Users.Where(o => o.Login == "user").FirstOrDefault();
 #endif
-                using (MemoryStream mStream = new MemoryStream(User.UserPhoto))
+                if (User.UserPhoto != null)
                 {
-                    User.photo = BitmapFrame.Create(mStream,
-                                BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    using (MemoryStream mStream = new MemoryStream(User.UserPhoto))
+                    {
+                        User.photo = BitmapFrame.Create(mStream,
+                                    BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    }
                 }
                 try
                 {
@@ -86,6 +89,10 @@ namespace CP_v1_2
                 imgUser.Fill = new ImageBrush(User.photo);
                 tblUser.Text = $"{User.UserName ?? User.Login}";
                 Visibility = Visibility.Visible;
+                if (User.UsersRole == User.Role.root)
+                {
+                    AdminSettings.Visibility = Visibility.Visible;
+                }
             }
         }
 

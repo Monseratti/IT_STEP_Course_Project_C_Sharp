@@ -36,6 +36,10 @@
                     <TextBlock Margin="30 0 0 0" Foreground="White" FontSize="40" Text="Sum"/>
                     <TextBox Margin="150 0 0 0" x:Name="tblSum" Width="250" FontSize="40"/>
                 </StackPanel>
+                <StackPanel Margin="0 40 0 0" Orientation="Horizontal">
+                    <TextBlock Margin="30 0 0 0" Foreground="White" FontSize="40" Text="Currency"/>
+                    <ComboBox Margin="68 0 0 0" Width = "300"   FontSize="30" x:Name="cbxCurrency"/>
+                </StackPanel>
             </StackPanel>
             <Button x:Name="_Edit" Click="_Edit_Click"
                 Grid.Column="0" Grid.Row="1"  Style="{StaticResource editButton}"/>

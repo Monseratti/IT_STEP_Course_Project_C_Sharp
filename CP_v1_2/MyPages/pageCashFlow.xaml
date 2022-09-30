@@ -19,9 +19,18 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width = "*"/>
                 <ColumnDefinition Width = "auto"/>
+                <ColumnDefinition Width = "auto"/>
                 <ColumnDefinition Width = "150"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="btnAddRow" Grid.Column="1"
+            <StackPanel Grid.Column="1" Margin="0 0 40 0" Orientation="Horizontal">
+                <Icon:PackIconMaterial Kind="BookSearchOutline" Foreground="White"
+                                       Width="35" Height="35" Padding="0 5 0 0"/>
+                <TextBlock Text="Search by category..." Foreground="White" FontSize="20"
+                           Padding="0 5 5 0"/>
+                <TextBox x:Name="tblSearch" TextChanged="TextBox_TextChanged" 
+                         FontSize="20" Width="250"/>
+            </StackPanel>
+            <Button x:Name="btnAddRow" Grid.Column="2"
                     Click="btnAddRow_Click" Style="{StaticResource addDataButton}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
@@ -46,10 +55,10 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <Icon:PackIconMaterial Kind="ArrowUpBold" 
+                                <Icon:PackIconMaterial Kind="ArrowDownBold" 
                                                        Foreground="Green" 
                                                        Visibility="{Binding CatType, ConverterParameter=True, Converter={StaticResource TypeConv}}"/>
-                                <Icon:PackIconMaterial Kind="ArrowDownBold" 
+                                <Icon:PackIconMaterial Kind="ArrowUpBold" 
                                                        Foreground="Red" 
                                                        Visibility="{Binding CatType, ConverterParameter=False, Converter={StaticResource TypeConv}}"/>
                             </StackPanel>

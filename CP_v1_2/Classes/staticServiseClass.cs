@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CP_v1_2.Classes
@@ -68,6 +69,18 @@ namespace CP_v1_2.Classes
             }
             return _img;
         }
+        public static ImageSource SetUserPhotoFromByteArray(byte[] byte_image)
+        {
+            if (byte_image != null)
+            {
+                using (MemoryStream mStream = new MemoryStream(byte_image))
+                {
+                    return BitmapFrame.Create(mStream,
+                                BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                }
+            }
+            else return null;
+        }
         public static User GetTemporaryUser()
         {
             User user = new User();
@@ -75,10 +88,13 @@ namespace CP_v1_2.Classes
             {
                 int userID = db.TemporaryUsers.Where(tmp => tmp.TemporaryUserID == 1).First().UserId;
                 user = db.Users.Where(u => u.UserID == userID).First();
-                using (MemoryStream mStream = new MemoryStream(user.UserPhoto))
+                if (user.UserPhoto != null)
                 {
-                    user.photo = BitmapFrame.Create(mStream,
-                                BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    using (MemoryStream mStream = new MemoryStream(user.UserPhoto))
+                    {
+                        user.photo = BitmapFrame.Create(mStream,
+                                    BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                    }
                 }
             }
             return user;
@@ -111,8 +127,21 @@ namespace CP_v1_2.Classes
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(parameter!=null) return ((DateTime)value).ToString("HH:mm");
+            if (parameter != null) return ((DateTime)value).ToString("HH:mm");
             return ((DateTime)value).ToString("ddd, d.MM.yyyy, HH:mm");
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return DependencyProperty.UnsetValue;
+        }
+    }
+
+    public class DecimalToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ((decimal)value).ToString("P");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CP_v1_2.Classes;
+using Newtonsoft.Json;
 
 namespace CP_v1_2.MyPages
 {
@@ -28,8 +30,9 @@ namespace CP_v1_2.MyPages
             InitializeComponent();
             User = staticServiseClass.GetTemporaryUser();
             WalletInfo();
-            //TodayCashFlow();
+            PlanningImplementation();
             TodayListCashFlow();
+            ExchangeCourseInfo();
         }
         private void WalletInfo()
         {
@@ -48,50 +51,6 @@ namespace CP_v1_2.MyPages
 
             }
         }
-
-        //private void TodayCashFlow()
-        //{
-        //    using (HBContext db = new HBContext())
-        //    {
-        //        var today = DateTime.Today.Date;
-        //        var cashflow = db.Wallets.Where(w => w.UserID == User.UserID).
-        //            Join(db.CashFlows, w => w.WalletID, cf => cf.WalletID,
-        //            (w, cf) => new { cf.DateTime, cf.Sum, cf.NomenclatureID, w.CurrencyID }).
-        //            Where(cf => DbFunctions.TruncateTime(cf.DateTime) == today).
-        //            Join(db.Currencies, cf => cf.CurrencyID, cu => cu.CurrensyID,
-        //            (cf, cu) => new { cf.Sum, cf.NomenclatureID, cu.CurrencyName }).
-        //            Join(db.Nomenclatures, cf => cf.NomenclatureID, n => n.NomenclatureID,
-        //            (cf, n) => new { cf.Sum, n.CategoryID, cf.CurrencyName }).
-        //            Join(db.Categories, cf => cf.CategoryID, c => c.CategoryID,
-        //            (cf, c) => new { Sum = cf.Sum, CatType = c.CategoryType, Curr = cf.CurrencyName }).GroupBy(o => o.CatType);
-
-        //        foreach (var catType in cashflow)
-        //        {
-        //            var el = catType.GroupBy(o => o.Curr);
-        //            foreach (var cur in el)
-        //            {
-        //                decimal _sum = 0;
-        //                foreach (var sum in cur)
-        //                {
-        //                    _sum += sum.Sum;
-        //                    if (catType.Key == true)
-        //                    {
-        //                        tblTodayCashFlowIn.Text = $"{cur.Key}: {_sum}\n ";
-        //                    }
-        //                    else
-        //                    {
-        //                        tblTodayCashFlowOut.Text = $"{cur.Key}: {_sum}\n ";
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if (cashflow.Count() == 0)
-        //        {
-        //            tblTodayCashFlowIn.Text = $"0";
-        //            tblTodayCashFlowOut.Text = $"0";
-        //        }
-        //    }
-        //}
 
         private void TodayListCashFlow()
         {
@@ -117,6 +76,47 @@ namespace CP_v1_2.MyPages
 
                 dtg_Info.ItemsSource = Data;
             }
+        }
+
+        private void PlanningImplementation()
+        {
+            using (HBContext db = new HBContext())
+            {
+                var month = DateTime.Today.Month;
+                var year = DateTime.Today.Year;
+
+                var Data = db.PlanningCashFlows.Where(pl => pl.UserID == User.UserID&&pl.Period_month == month&&pl.Period_year==year)
+                   .Join(db.Currencies, pl => pl.CurrencyID, cur => cur.CurrensyID,
+                   (pl, cur) => new { pl.PcfID, pl.CategoryID, pl.Sum, pl.CashFlowSum, pl.Period_month, pl.Period_year, cur.CurrencyName })
+                   .Join(db.Categories, pl => pl.CategoryID, cat => cat.CategoryID,
+                   (pl, cat) => new { 
+                       Category = cat.CategoryName, 
+                       Sum = pl.CashFlowSum.ToString() + " / " + pl.Sum.ToString(),
+                       Percent = pl.CashFlowSum/pl.Sum,
+                       Currency = pl.CurrencyName }).ToList();
+
+                dtg_PlansInfo.ItemsSource = Data;
+            }
+        }
+
+        delegate void Combodelegate(List<Course> courses);
+
+        private async void ExchangeCourseInfo()
+        {
+            using (HttpClient client = new HttpClient())
+            using (HttpRequestMessage reqw = new HttpRequestMessage())
+            {
+                reqw.RequestUri = new Uri(" https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5");
+                reqw.Method = HttpMethod.Get;
+                HttpResponseMessage httpResponse = await client.SendAsync(reqw).ConfigureAwait(false);
+                string resp = await httpResponse.Content.ReadAsStringAsync();
+                List<Course> courses = JsonConvert.DeserializeObject<List<Course>>(resp);
+                await dtg_CursInfo.Dispatcher.BeginInvoke(new Combodelegate(AddInfo), courses);
+            }
+        }
+        private void AddInfo(List<Course> courses)
+        {
+            dtg_CursInfo.ItemsSource = courses;
         }
     }
 }
