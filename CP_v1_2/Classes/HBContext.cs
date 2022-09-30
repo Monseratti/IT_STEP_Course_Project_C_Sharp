@@ -26,7 +26,7 @@ namespace CP_v1_2
         public DbSet <Wallet> Wallets { get; set; }
     }
 
-    public class HBInitializer: DropCreateDatabaseAlways<HBContext>
+    public class HBInitializer: CreateDatabaseIfNotExists<HBContext>
     {
         protected override void Seed(HBContext db)
         {
